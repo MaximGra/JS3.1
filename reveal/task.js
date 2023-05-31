@@ -1,22 +1,25 @@
-const spam = document.getElementsByClassName('reveal');
+const divs = document.querySelectorAll('.reveal')
 
-let isInViewPort = function(element) {
-    const viewPortHeight = window.innerHeight;
-    const elementTop = element.getBoundingClientRect().top;
-
-    if (elementTop < 0 && elementTop > viewPortHeight) {
-        return false;
-    } else {
-        return true;
+function isVisible (el) {
+    const { top, bottom } = el.getBoundingClientRect()
+    if (bottom < 0) {
+        return false
     }
+    if (top > window.innerHeight) {
+        return false
+    }
+    return true
 }
 
-window.addEventListener('scroll', function () {
-    for (let i = 0; i < spam.length; i++) {
-        if ( isInViewPort(spam[i]) === true ) {
-            spam[i].classList.add('reveal_active');
+function showVisible() {
+    divs.forEach(function(div) {
+        if (isVisible(div)) {
+            div.classList.add('reveal_active') 
         } else {
-            spam[i].classList.remove('reveal_active');
+            div.className = 'reveal'
         }
-    }
-});
+      });
+}
+
+  showVisible();
+  window.onscroll = showVisible;
